@@ -1097,7 +1097,7 @@ function openCmp(old){
   let h=`<div class="nit"><div class="ni"><b>${d.ic}</b>Lv.${cur.lv}</div><div class="nt"><h5 style="color:${R.c}">[${R.n}] ${d.n}</h5>${statRows(cur,old)}</div></div>`;
   h+=`<button class="nbtn" onclick="equipGo()">${tr_('equip')}</button><button class="nsell" onclick="doSell()">${tr_('sell')} 🪙${sellVal(cur)}</button>`;
   $('cmpBody').innerHTML=h;$('cmpModal').classList.add('on')}
-function equipGo(){$('orb').classList.add('on');setTimeout(()=>{$('orb').classList.remove('on');doEquip()},900)}
+function equipGo(){doEquip()}
 /* --- ana ekran dokunma noktalari --- */
 (function(){const hs=[...document.querySelectorAll('.hs')],par=hs[0].parentElement;
   hs[14].setAttribute('onclick','lockToast(125,event)');hs[15].setAttribute('onclick','openTitle()');
