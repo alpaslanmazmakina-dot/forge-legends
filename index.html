@@ -302,6 +302,20 @@ body{display:flex;align-items:center;justify-content:center;height:100vh;height:
 .autob.on{background:linear-gradient(#aedb55,#5a9624);border-color:#2f5a10;box-shadow:0 0 0 .8cqw #aedb55,0 0 4cqw 1cqw #7fe03a}
 .anvilglow{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(#ffb02e66,#ff7a1a00 68%);mix-blend-mode:screen;animation:aglow 2.6s ease-in-out infinite;z-index:0}
 .ember{z-index:1}
+
+.hflash{position:absolute;width:28cqw;height:28cqw;border-radius:50%;background:radial-gradient(#fff8d0 0,#ffb02ecc 30%,#ff7a1a00 70%);mix-blend-mode:screen;pointer-events:none;z-index:5;animation:hfl .45s ease-out forwards}
+@keyframes hfl{0%{opacity:0;transform:scale(.3)}25%{opacity:1}100%{opacity:0;transform:scale(1.3)}}
+.hring{position:absolute;width:6cqw;height:6cqw;border-radius:50%;border:.8cqw solid #ffd45a;box-shadow:0 0 2cqw #ff9a1f;pointer-events:none;z-index:5;animation:hrg .5s ease-out forwards}
+.hring.r2{animation-delay:.08s;border-color:#fff;opacity:0}
+@keyframes hrg{0%{opacity:.95;transform:scale(.3)}100%{opacity:0;transform:scale(5)}}
+.spk{position:absolute;width:1.3cqw;height:1.3cqw;border-radius:50%;background:var(--c);box-shadow:0 0 2cqw .4cqw var(--c);pointer-events:none;z-index:6;animation:spk .6s cubic-bezier(.2,.7,.4,1) forwards}
+.spk.big{width:1.8cqw;height:1.8cqw}
+@keyframes spk{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
+.ipop{position:absolute;left:50%;bottom:58cqw;width:0;height:0;z-index:7;pointer-events:none;animation:ipop .62s cubic-bezier(.2,1.2,.4,1) forwards}
+.ipop .ig{position:absolute;left:-14cqw;top:-14cqw;width:28cqw;height:28cqw;border-radius:50%;background:radial-gradient(var(--rc),transparent 68%);opacity:.75;mix-blend-mode:screen}
+.ipop .ii2{position:absolute;left:-8cqw;top:-8cqw;width:16cqw;text-align:center;font-size:12cqw;line-height:16cqw;filter:drop-shadow(0 0 1.6cqw var(--rc)) drop-shadow(0 .6cqw .6cqw #000)}
+.ipop .in{position:absolute;left:-14cqw;top:6cqw;width:28cqw;text-align:center;font:900 3.4cqw "Trebuchet MS",sans-serif;text-shadow:0 .3cqw 0 #000,0 0 1.4cqw #000}
+@keyframes ipop{0%{opacity:0;transform:translateY(8cqw) scale(.2)}45%{opacity:1;transform:translateY(-14cqw) scale(1.25)}75%{opacity:1;transform:translateY(-16cqw) scale(1.05)}100%{opacity:0;transform:translateY(-20cqw) scale(1)}}
 </style>
 </head>
 <body>
@@ -502,14 +516,49 @@ let cur=null,busy=false;
 function forge(){
   if(busy||$('cmpModal').classList.contains('on'))return;
   if(S.iron<=0){toast('Demir parçası bitti!');return}
-  sfx();busy=true;S.iron--;S.forged++;S.quest++;
-  const h=$('hammer');h.classList.add('hit');sparks();
-  setTimeout(()=>{h.classList.remove('hit')},120);
-  setTimeout(()=>{busy=false;cur=genItem();gainXP(15);S.tut===1&&tutStep(0,true);
+  busy=true;S.iron--;S.forged++;S.quest++;render();
+  const k=auto?.5:1,h=$('hammer'),m=$('main'),it=genItem(),rc=RAR[it.rar].c;
+  const T=x=>x*k;
+  // 1) cekic: geri sallan -> vur -> sek
+  h.animate([
+    {transform:'rotate(0deg)',offset:0},
+    {transform:'rotate(15deg) translateY(-1cqw)',offset:.3,easing:'ease-out'},
+    {transform:'rotate(15deg) translateY(-1cqw)',offset:.4,easing:'cubic-bezier(.6,0,1,.6)'},
+    {transform:'rotate(-17deg) scale(1.03)',offset:.6,filter:'brightness(1.5) drop-shadow(0 0 3cqw #ffc84a)'},
+    {transform:'rotate(-7deg)',offset:.8,easing:'ease-out'},
+    {transform:'rotate(0deg)',offset:1}
+  ],{duration:T(520)});
+  // 2) vurus aninda: ses, flas, halka, kivilcim, sarsinti
+  setTimeout(()=>{
+    sfx();
+    const X=48,Y=55;
+    const mk=(c,st)=>{const e=document.createElement('div');e.className=c;e.style.cssText=st;m.appendChild(e);return e};
+    mk('hflash',`left:${X-14}cqw;bottom:${Y-14}cqw`);
+    mk('hring',`left:${X-3}cqw;bottom:${Y-3}cqw`);
+    mk('hring r2',`left:${X-3}cqw;bottom:${Y-3}cqw`);
+    const n=auto?8:18;
+    for(let i=0;i<n;i++){const d=document.createElement('div');d.className='spk';
+      const ang=(-20-Math.random()*140)*Math.PI/180,r=10+Math.random()*20;
+      d.style.cssText=`left:${X}cqw;bottom:${Y}cqw;--dx:${Math.cos(ang)*r}cqw;--dy:${-Math.sin(ang)*r+9}cqw;--c:${Math.random()<.3?'#fff2b0':'#ff9a1f'};animation-delay:${Math.random()*60}ms;animation-duration:${(450+Math.random()*350)*k}ms`;
+      m.appendChild(d);setTimeout(()=>d.remove(),1000)}
+    setTimeout(()=>m.querySelectorAll('.hflash,.hring').forEach(e=>e.remove()),T(800));
+    if(!auto)m.animate([{transform:'translate(0,0)'},{transform:'translate(.9cqw,.6cqw)'},{transform:'translate(-.8cqw,-.5cqw)'},{transform:'translate(.4cqw,.3cqw)'},{transform:'translate(0,0)'}],{duration:240});
+  },T(310));
+  // 3) esya orsten firlar
+  setTimeout(()=>{
+    const d=slotDef(it.slot),e=document.createElement('div');e.className='ipop';
+    e.style.cssText=`--rc:${rc}`;
+    e.innerHTML=`<div class="ig"></div><div class="ii2">${d.ic}</div><div class="in" style="color:${rc}">${RAR[it.rar].n}</div>`;
+    e.style.animationDuration=T(620)+'ms';m.appendChild(e);setTimeout(()=>e.remove(),T(700));
+    if(it.rar>=3){for(let i=0;i<14;i++){const p=document.createElement('div');p.className='spk big';
+      const ang=Math.random()*Math.PI*2,r=12+Math.random()*14;
+      p.style.cssText=`left:48cqw;bottom:72cqw;--dx:${Math.cos(ang)*r}cqw;--dy:${Math.sin(ang)*r}cqw;--c:${rc};animation-duration:${T(700)}ms`;m.appendChild(p);setTimeout(()=>p.remove(),T(800))}}
+  },T(400));
+  // 4) karar
+  setTimeout(()=>{busy=false;cur=it;gainXP(15);S.tut===1&&tutStep(0,true);
     const old=S.eq[cur.slot];
     if(!old&&!auto){const nm=slotDef(cur.slot).n;autoDecide(true);toast('Yeni '+nm+' takıldı')}
-    else if(auto){autoDecide(false)}else openCmp(old)},320);
-  render()
+    else if(auto){autoDecide(false)}else openCmp(old)},T(1000));
 }
 function sparks(){const f=$('main'),b=$('hammer').getBoundingClientRect(),fr=f.getBoundingClientRect();
   for(let i=0;i<9;i++){const e=document.createElement('div');e.className='fx';e.textContent=pick(['✨','🔸','💥','⭐']);
@@ -533,7 +582,7 @@ function doSell(){S.gold+=sellVal(cur);S.sold++;done()}
 function done(){$('cmpModal').classList.remove('on');cur=null;save();render()}
 function autoDecide(forceEquip){const old=S.eq[cur.slot];if(forceEquip||power(cur)>power(old)){if(old)S.gold+=sellVal(old);S.eq[cur.slot]=cur;S.equipped++}else{S.gold+=sellVal(cur);S.sold++}cur=null;save();render()}
 let auto=false,at;
-function toggleAuto(){auto=!auto;$('autoBtn').classList.toggle('on',auto);clearInterval(at);if(auto)at=setInterval(()=>{if(S.iron<=0){toggleAuto();toast('Demir parçası bitti')}else forge()},900)}
+function toggleAuto(){auto=!auto;$('autoBtn').classList.toggle('on',auto);clearInterval(at);if(auto)at=setInterval(()=>{if(S.iron<=0){toggleAuto();toast('Demir parçası bitti')}else forge()},650)}
 
 /* ---------- Ogretici ---------- */
 function tutStep(n,adv){
