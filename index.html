@@ -256,6 +256,45 @@ body{display:flex;align-items:center;justify-content:center;height:100vh;height:
 @keyframes tw{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:.95;transform:scale(1.2)}}
 .moon{position:absolute;right:14%;top:22%;width:11cqw;height:11cqw;border-radius:50%;background:radial-gradient(circle at 38% 38%,#fffbea,#d9d2b8 70%);box-shadow:0 0 5cqw 2cqw #c9d6ff55;z-index:1;opacity:.92}
 .moon::after{content:"";position:absolute;left:46%;top:-4%;width:100%;height:108%;border-radius:50%;background:#101626;opacity:.0}
+
+/* ===== PANEL TEMASI v5: referans video (parsomen + koyu cerceve + kirmizi serit) ===== */
+.paper{background:radial-gradient(ellipse at 50% 40%,#e6d7ae,#d4c08f 70%,#b9a370);border:1.1cqw solid #34302c;border-radius:1.6cqw;box-shadow:inset 0 0 0 .5cqw #8c7c5e,inset 0 0 7cqw #8a74482a,0 2.4cqw 0 #14110e,0 3cqw 6cqw #000}
+.paper.set,.paper.wide{overflow:visible;max-height:none}
+.paper.set{padding-top:8cqw}
+.rtitle,#mModal .ptitle{position:absolute;left:50%;top:-5cqw;transform:translateX(-50%);min-width:54%;margin:0;padding:1.8cqw 6cqw;text-align:center;color:#fff;font:900 4.8cqw "Trebuchet MS",system-ui,sans-serif;letter-spacing:.4px;text-shadow:0 .4cqw 0 #4a0f08,0 0 1cqw #4a0f08;background:linear-gradient(#cf4a3b,#9a2418 70%,#8a1f14);border:.5cqw solid #e8b058;border-radius:1cqw;box-shadow:0 .8cqw 0 #5a140c,0 1.6cqw 2cqw #000a;z-index:5;white-space:nowrap}
+.rtitle::before,.rtitle::after,#mModal .ptitle::before,#mModal .ptitle::after{content:"";position:absolute;top:1.4cqw;width:9cqw;height:100%;background:linear-gradient(#a8352a,#7a1a10);border:.5cqw solid #c8903c;z-index:-1}
+.rtitle::before,#mModal .ptitle::before{left:-6.6cqw;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,22% 50%)}
+.rtitle::after,#mModal .ptitle::after{right:-6.6cqw;clip-path:polygon(0 0,100% 0,78% 50%,100% 100%,0 100%)}
+#mModal .ptitle b{color:#ffd45a;text-shadow:0 .3cqw 0 #6a3a00}
+.rtitle.dark{background:linear-gradient(#cf4a3b,#9a2418);top:-4.4cqw}
+.psub{width:auto;display:table;margin:2.6cqw auto 2cqw;padding:.8cqw 5cqw;background:linear-gradient(#4a423a,#2e2823);color:#e8c36a;border:.4cqw solid #8c7c5e;border-radius:1cqw;clip-path:none;font-size:3.2cqw;font-weight:800}
+.paper:has(#mlist){padding-top:9cqw}
+.mrow{background:rgba(70,56,38,.12);border:.4cqw solid #a8956a;border-radius:1.6cqw;box-shadow:inset 0 .3cqw 0 #ffffff55}
+.mic{box-shadow:0 0 0 .5cqw #8c7c5e}
+.mbar{background:#4a3c2a33;border:.3cqw solid #8c7c5e}
+.mmid b{color:#3b2a1a}.mmid small,.mrew,.pfoot{color:#6a5236}
+.btn-green.sm{background:linear-gradient(#7fd05a,#3f8a28);border:.5cqw solid #1f5014;border-bottom-width:1cqw;color:#fff;border-radius:1.4cqw;text-shadow:0 .3cqw 0 #1f5014}
+.btn-green.sm.off,.btn-green.sm:disabled{background:linear-gradient(#a8a090,#7c7466);border-color:#4a443a;text-shadow:0 .2cqw 0 #3a352c}
+.mlist{max-height:none;overflow:visible}
+.mlist::-webkit-scrollbar,.paper::-webkit-scrollbar{width:1.2cqw}
+.mlist::-webkit-scrollbar-thumb,.paper::-webkit-scrollbar-thumb{background:#6a5a44;border-radius:1cqw}
+.mlist::-webkit-scrollbar-track,.paper::-webkit-scrollbar-track{background:transparent}
+.xbtn,.close{background:linear-gradient(#cf4a3b,#8a1f14);border:.5cqw solid #e8b058;color:#fff;box-shadow:0 .5cqw 0 #5a140c,0 1cqw 1.4cqw #000a;width:9cqw;height:9cqw;font-size:4.6cqw;right:-2cqw;top:-3cqw;z-index:6}
+.logout{background:linear-gradient(#cf4a3b,#8a1f14);border:.5cqw solid #e8b058;z-index:6}
+.srow{background:rgba(70,56,38,.14);border:.3cqw solid #a8956a55}
+.srow span{color:#6a5236}.srow b{color:#3b2a1a}
+.stitle{color:#8a6c30}
+.btn-yellow{background:linear-gradient(#ffd45a,#e0961c);border:.5cqw solid #8a5a0a;border-bottom-width:1cqw;border-radius:1.2cqw}
+.mini{background:linear-gradient(#ffb23a,#e8820f);border:.4cqw solid #8a4a08;border-radius:1cqw;color:#fff}
+.sbtns button{background:linear-gradient(#b5892e,#6e4c14);border:.5cqw solid #3a2608;border-bottom-width:1cqw;color:#fff4d0;text-shadow:0 .3cqw 0 #3a2608;box-shadow:inset 0 .4cqw 0 #ffffff44;border-radius:1.4cqw}
+.sld{background:linear-gradient(to right,#f5a623 var(--v,100%),#5a4630 var(--v,100%));border:.4cqw solid #3a2608}
+.links a{color:#8a6c40}
+.card{background:rgba(70,56,38,.12);border:.5cqw solid #8c7c5e}
+.btns .sell{background:linear-gradient(#e85a4a,#a8281c);border-color:#5a140c;color:#fff;text-shadow:0 .3cqw 0 #5a140c}
+.btns .equip{background:linear-gradient(#7fd05a,#3f8a28);border-color:#1f5014}
+.lgrid input{appearance:none;-webkit-appearance:none;width:5.2cqw;height:5.2cqw;border-radius:1cqw;border:.4cqw solid #5a5a60;background:#2a2a2e;position:relative;margin:0}
+.lgrid input:checked{background:linear-gradient(#5fd07a,#1f8a3c);border-color:#126028}
+.lgrid input:checked::after{content:"✔";position:absolute;inset:0;color:#fff;font-size:3.6cqw;line-height:4.6cqw;text-align:center}
 </style>
 </head>
 <body>
