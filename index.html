@@ -756,6 +756,7 @@ body{display:flex;align-items:center;justify-content:center;height:100vh;height:
 <div class="modal" id="attrModal" onclick="if(event.target===this)closeAttr()"><div class="abox"><div class="rtitle dark" data-i="attr_t">ÖZELLİKLER</div><div class="alist" id="alist"></div><div class="adown" id="adown">▼</div></div></div>
 <div id="orb"><i class="u-orb"></i><b><u></u><u></u><u></u></b></div>
 
+<div class="modal pn" id="anvModal" onclick="if(event.target===this)Modal.close('anvModal')"><div class="enhtop"><span>🪙 <b id="anG">0</b></span><span>⛏ <b id="anI">0</b></span></div><div class="paper"><div class="rtitle">Demirci Örsü</div><div id="anvBody"></div></div></div>
 <div class="modal pn" id="eqModal" onclick="if(event.target===this)Modal.close('eqModal')"><div class="paper"><div class="rtitle" data-i="eqt">Ekipman</div><div id="eqBody"></div></div></div>
 <div class="modal pn" id="enhModal" onclick="if(event.target===this)Modal.close('enhModal')"><div class="enhtop"><span>🪙 <b id="ehG">0</b></span><span>⛏ <b id="ehI">0</b></span></div><div class="paper"><div class="rtitle" data-i="eqt">Ekipman</div><div id="enhBody"></div></div></div>
 <div class="modal" id="mailModal" onclick="if(event.target===this)Modal.close('mailModal')"><div class="abox mbx"><div class="rtitle dark" data-i="mailt">Posta</div><div id="mailBody"></div></div></div>
@@ -830,13 +831,14 @@ const SEC=['CMB','CTA','BLK','CRIT','ER'];
 const BASE={HP:995,ATK:240,DEF:119,SPD:17};
 let S;
 function fresh(){return{name:'Oyuncu',lv:1,xp:0,gold:0,gems:0,iron:64,forged:0,quest:0,eq:{weapon:{starter:1,slot:'weapon',rar:0,lv:1,st:{},sec:{}}},tut:0,login:'',equipped:0,sold:0,mc:{}}}
-function load(){S=Persist.loadState()||fresh();S.equipped=S.equipped||0;S.sold=S.sold||0;S.mc=S.mc||{};if(S.music==null)S.music=100;if(S.sound==null)S.sound=100;S.lang=S.lang||'tr';if(S.notif==null)S.notif=true;S.id=S.id||String(Math.floor(10000000+Math.random()*89999999));if(!S.eq.weapon)S.eq.weapon={starter:1,slot:'weapon',rar:0,lv:1,st:{},sec:{}}}
+function load(){S=Persist.loadState()||fresh();S.equipped=S.equipped||0;S.sold=S.sold||0;S.sg=S.sg||0;S.anvil=S.anvil||1;S.qi=S.qi||0;S.qb=S.qb||{};S.mc=S.mc||{};if(S.music==null)S.music=100;if(S.sound==null)S.sound=100;S.lang=S.lang||'tr';if(S.notif==null)S.notif=true;S.id=S.id||String(Math.floor(10000000+Math.random()*89999999));if(!S.eq.weapon)S.eq.weapon={starter:1,slot:'weapon',rar:0,lv:1,st:{},sec:{}}}
 function save(){Persist.saveState(S)}
 const need=lv=>45+(lv-1)*35;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 
 /* ---------- Esya uretimi ---------- */
-function rollRar(){let t=RAR.reduce((a,r)=>a+r.w,0),x=Math.random()*t;for(let i=0;i<RAR.length;i++){if((x-=RAR[i].w)<0)return i}return 0}
+function anvW(L){const a=Math.max(.3,2.2-.45*(L-1));const w=RAR.map((_,i)=>Math.exp(-a*i)),t=w.reduce((x,y)=>x+y,0);return w.map(v=>v/t*100)}
+function rollRar(){const w=anvW(S.anvil||1);let x=Math.random()*100;for(let i=0;i<w.length;i++){if((x-=w[i])<0)return i}return 0}
 function genItem(){
   const defs=SLOTS.filter(s=>s.main);const sl=pick(defs);const r=rollRar();const lv=Math.max(1,S.lv*3+Math.floor(Math.random()*4)-1);
   const mult=RAR[r].m*(1+lv*0.12),st={};
@@ -918,7 +920,7 @@ const Equipment={
     return{slot:d.slotType,base:id,rar:o.rar==null?1:o.rar,lv:o.lv||1,st,sec:{},en:0,uid:Date.now()+Math.random()}},
   equip(itemOrId,opt){opt=opt||{};S.inv=S.inv||[];const it=typeof itemOrId==='string'?this.make(itemOrId,opt):itemOrId;if(!it||!it.slot)return false;
     const i=S.inv.indexOf(it);if(i>=0)S.inv.splice(i,1);
-    const old=S.eq[it.slot];if(old&&!old.starter){if(opt.oldTo==='sell')S.gold+=sellVal(old);else if(opt.oldTo!=='drop')S.inv.push(old)}
+    const old=S.eq[it.slot];if(old&&!old.starter){if(opt.oldTo==='sell'){S.gold+=sellVal(old);S.sg=(S.sg||0)+sellVal(old)}else if(opt.oldTo!=='drop')S.inv.push(old)}
     S.eq[it.slot]=it;S.equipped++;Bus.emit('equip',{slot:it.slot,item:it,old});StatSystem.recalc('equip');return true},
   unequip(slot){const it=S.eq[slot];if(!it||it.starter)return null;S.inv=S.inv||[];S.inv.push(it);
     S.eq[slot]=slot==='weapon'?{starter:1,slot:'weapon',rar:0,lv:1,st:{},sec:{}}:undefined;if(S.eq[slot]===undefined)delete S.eq[slot];
@@ -958,7 +960,7 @@ if(location.hash==='#debug')window.addEventListener('load',()=>setTimeout(()=>De
 /*RIG-END*/
 function render(){
   $('pname').textContent=S.name;$('gems').textContent=S.gems;$('gold').textContent=S.gold;$('iron').textContent=S.iron;
-  $('plv').textContent=S.lv;$('alv').textContent=S.lv;const n=need(S.lv);$('xpbar').style.width=Math.min(100,S.xp/n*100*390/768)+'%';$('xptxt').textContent=S.xp+'/'+n;
+  $('plv').textContent=S.lv;$('alv').textContent=S.anvil||1;const n=need(S.lv);$('xpbar').style.width=Math.min(100,S.xp/n*100*390/768)+'%';$('xptxt').textContent=S.xp+'/'+n;
   // slotlar: sadece dolu olanlari ciz (bos olanlar gorselde var)
   const LX=[36,130],RX=[544,639],Y=[281,366,451,536],SW=82,SH=78;
   const order=[...SLOTS.filter(s=>!s.right).map(s=>s.k),...RIGHT_ORDER];
@@ -968,14 +970,32 @@ function render(){
   $('slotLayer').innerHTML=h;refreshHero();
   const t=totals(),pc=k=>t[k].toFixed(1).replace('.',',')+'%';
   [t.HP,t.ATK,t.DEF,t.SPD,pc('CMB'),pc('CTA'),pc('Stun'),pc('ER'),pc('CRIT')].forEach((v,i)=>$('st'+i).textContent=v);
-  const q=$('quest');const done=S.quest>=3&&!S.qclaimed;
+  const q=$('quest');const qs=qState();const done=qs.done;
   q.classList.toggle('done',done);
-  $('qtx').innerHTML=S.qclaimed?'Görev Defteri<br><span style="opacity:.8">Dokun, ödülleri al</span>':done?'Ödülü almak için dokun!':`3 ekipman dövün.<br><span style="color:#ff6b6b">${Math.min(S.quest,3)}</span>/3`;
+  $('qtx').innerHTML=qs.all?'Görev Defteri<br><span style="opacity:.8">Dokun, ödülleri al</span>':done?'Ödülü almak için dokun!':`${qs.t}<br><span style="color:#ff6b6b">${Math.min(qs.v,qs.n)}</span>/${qs.n}`;
   q.classList.toggle('dot',done||MIS.some(mReady));
 }
-function questClick(){if(S.quest>=3&&!S.qclaimed)claimQuest();else openM()}
+const QCH=[
+ {t:'1 ekipman satın.',c:'sold',n:1,r:{iron:5}},
+ {t:'Satarak 50 altın kazanın.',c:'sg',n:50,r:{iron:5}},
+ {t:'1 İyi veya üstü ekipman kuşanın.',f:()=>Object.values(S.eq).filter(i=>i.rar>=1).length,n:1,r:{iron:5}},
+ {t:'5 ekipman dövün.',c:'forged',n:5,r:{iron:5}},
+ {t:'2 İyi veya üstü ekipman kuşanın.',f:()=>Object.values(S.eq).filter(i=>i.rar>=1).length,n:2,r:{iron:5}},
+ {t:'Seviye 4\'e ulaşın.',f:()=>S.lv,n:4,r:{iron:5,gems:10}},
+ {t:'Örsü Sv.2\'ye yükseltin.',f:()=>S.anvil||1,n:2,r:{iron:10,gems:10}},
+ {t:'Bir ekipmanı +1 güçlendirin.',f:()=>Math.max(0,...Object.values(S.eq).map(i=>i.en||0)),n:1,r:{iron:10}},
+ {t:'20 ekipman dövün.',c:'forged',n:20,r:{iron:15,gems:20}},
+ {t:'Seviye 8\'e ulaşın.',f:()=>S.lv,n:8,r:{iron:20,gems:30}}];
+function qState(){
+  if(!S.qclaimed)return{t:'3 ekipman dövün.',v:S.quest,n:3,done:S.quest>=3};
+  const i=S.qi||0;if(i>=QCH.length)return{all:1,done:false,v:0,n:0,t:''};
+  const q=QCH[i],v=q.c?(S[q.c]||0)-((S.qb||{})[q.c]||0):q.f();
+  return{t:q.t,v,n:q.n,done:v>=q.n}}
+function claimChain(){const i=S.qi||0,q=QCH[i];if(!q)return;for(const k in q.r)S[k]=(S[k]||0)+q.r[k];
+  S.qi=i+1;S.qb={forged:S.forged,sold:S.sold,sg:S.sg,equipped:S.equipped};save();render();toast('Ödül: '+rewTxt(q.r))}
+function questClick(){if(!S.qclaimed){if(S.quest>=3)claimQuest();else openM()}else{const qs=qState();if(qs.done)claimChain();else openM()}}
 function enterMain(){show('main');render();if(!S.tut)tutStep(1)}
-function claimQuest(){S.qclaimed=1;S.gems+=50;S.iron+=30;save();render();toast('Ödül: 💎50  🔩30');if(S.tut<3){S.tut=3;save();tutStep(0)}}
+function claimQuest(){S.qclaimed=1;S.qb={forged:S.forged,sold:S.sold,sg:S.sg,equipped:S.equipped};S.gems+=50;S.iron+=30;save();render();toast('Ödül: 💎50  🔩30');if(S.tut<3){S.tut=3;save();tutStep(0)}}
 
 
 /* ---------- Gorev defteri ---------- */
@@ -1032,12 +1052,12 @@ function openCmp(old){
 const sellVal=it=>Math.round(20*(it.lv)*RAR[it.rar].m);
 function doEquip(){const it=cur,old=S.eq[it.slot];Equipment.equip(it,{oldTo:'drop'});
   if(old&&!old.starter){cur=old;save();render();openCmp(S.eq[cur.slot])}else done()}
-function sellGo(){S.gold+=sellVal(cur);S.sold++;done()}
+function sellGo(){S.gold+=sellVal(cur);S.sg+=sellVal(cur);S.sold++;done()}
 function doSell(){const old=S.eq[cur.slot];const better=old&&!old.starter&&['HP','ATK','DEF','SPD'].every(k=>(cur.st[k]||0)>=(old.st[k]||0))&&['HP','ATK','DEF','SPD'].some(k=>(cur.st[k]||0)>(old.st[k]||0));
   if(!better){sellGo();return}
   popup(`<div style="text-align:center;padding:4% 3%;color:#f4e2b0;font-weight:700;line-height:1.4">${tr_('sellcf')}</div><div class="prow"><button class="pcancel" onclick="closePop()">${tr_('cancel')}</button><button class="pok" onclick="closePop();sellGo()">${tr_('confirm')}</button></div>`,tr_('tip'))}
 function done(){$('cmpModal').classList.remove('on');cur=null;save();render()}
-function autoDecide(forceEquip){const old=S.eq[cur.slot];if(forceEquip||power(cur)>power(old)){Equipment.equip(cur,{oldTo:'sell'})}else{S.gold+=sellVal(cur);S.sold++}cur=null;save();render()}
+function autoDecide(forceEquip){const old=S.eq[cur.slot];if(forceEquip||power(cur)>power(old)){Equipment.equip(cur,{oldTo:'sell'})}else{S.gold+=sellVal(cur);S.sg+=sellVal(cur);S.sold++}cur=null;save();render()}
 let auto=false,at;
 function toggleAuto(){auto=!auto;$('autoBtn').classList.toggle('on',auto);clearInterval(at);if(auto)at=setInterval(()=>{if(S.iron<=0){toggleAuto();toast('Demir parçası bitti')}else forge()},900)}
 
@@ -1241,7 +1261,7 @@ function equipGo(){doEquip()}
 (function(){const hs=[...document.querySelectorAll('.hs')],par=hs[0].parentElement;
   hs[14].setAttribute('onclick','lockToast(125,event)');hs[15].setAttribute('onclick','openTitle()');
   hs[16].setAttribute('onclick','lockToast(200,event)');hs[17].setAttribute('onclick','openSkin()');
-  const a=document.createElement('div');a.className='hs';a.id='statHs';a.setAttribute('onclick','openAttr()');a.style.cssText='left:2%;top:62.4%;width:96%;height:9.8%';par.appendChild(a)})();
+  const a=document.createElement('div');a.className='hs';a.id='statHs';a.setAttribute('onclick','openAttr()');a.style.cssText='left:2%;top:62.4%;width:96%;height:9.8%';par.appendChild(a);const lab=$('alv').parentElement;lab.id='anvHs';lab.style.cssText+=';pointer-events:auto;cursor:pointer;padding:3.2cqw 7cqw;z-index:5';lab.addEventListener('click',openAnvil)})();
 
 
 /* ===== VIDEO 2 ===== */
@@ -1256,6 +1276,15 @@ function loadThen(fn){$('orb').classList.add('on');setTimeout(()=>{$('orb').clas
 let eqK=null;const ENHR=[5,10,15,20,25,30];
 const SIC={HP:'❤️',ATK:'⚔️',DEF:'🛡️',SPD:'👟'};
 function eqHead(it){const d=slotDef(it.slot),R=RAR[it.rar];return `<div class="eqh"><div class="ni"><b>${icOf(it)}</b>Lv.${it.lv}${it.en?` +${it.en}`:''}</div><div><h5 style="color:${R.c}">[${R.n}] ${d.n}</h5></div></div>`}
+const anvCost=L=>600*L,ANVMAX=20,RCOL=RAR.map(r=>r.c);
+function openAnvil(){const L=S.anvil||1,a=anvW(L),b=anvW(L+1);
+  let h=`<div class="eqh"><div class="ni"><b style="font-size:7cqw">⚒️</b>Sv.${L}</div><div><h5>Örs Seviyesi ${L}</h5><small style="color:#5a4630;font-weight:800">Seviye yükselince nadir eşya şansı artar</small></div></div><div class="eqst">`;
+  h+=`<div class="r" style="font-size:2.8cqw;color:#6a5236"><span>Nadirlik</span><span>Sv.${L} ➜ Sv.${L+1}</span></div>`;
+  h+=RAR.map((r,i)=>`<div class="r"><span style="color:${r.c};text-shadow:-.15cqw 0 #000,.15cqw 0 #000,0 .15cqw #000,0 -.15cqw #000">${r.n}</span><span>%${a[i].toFixed(2).replace('.',',')} <i class="arrow">➜</i> <em style="color:${b[i]>a[i]?'#1f9a4c':'#b02a20'};font-style:normal">%${b[i].toFixed(2).replace('.',',')}</em></span></div>`).join('')+'</div>';
+  h+=L>=ANVMAX?`<div class="eqnote">En yüksek örs seviyesi!</div>`:`<button class="pgreen" onclick="doAnvil()">🪙 ${anvCost(L)} Yükselt<small>Anında yükselir, bekleme yok</small></button>`;
+  $('anvBody').innerHTML=h;$('anG').textContent=S.gold;$('anI').textContent=S.iron;Modal.open('anvModal')}
+function doAnvil(){const L=S.anvil||1;if(L>=ANVMAX)return;const c=anvCost(L);if(S.gold<c){centerToast(tr_('needm'));return}
+  S.gold-=c;S.anvil=L+1;save();render();openAnvil();const g=$('game'),r=g.getBoundingClientRect();sparkAt(r.left+r.width/2,r.top+r.height*.5);toast('Örs Sv.'+S.anvil+' oldu!')}
 function openEquip(k){const it=S.eq[k];if(!it||it.starter)return;eqK=k;it.en=it.en||0;
   let h=eqHead(it)+`<div class="eqst">`+['HP','ATK','DEF','SPD'].filter(x=>it.st[x]!=null).map(x=>`<div class="r"><span>${SIC[x]} ${x}</span><b>${it.st[x]}</b></div>`).join('')+'</div><div class="eqdiv"><i></i></div>';
   const sec=Object.entries(it.sec||{});
