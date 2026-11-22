@@ -248,6 +248,14 @@ body{display:flex;align-items:center;justify-content:center;height:100vh;height:
 #zBot{position:absolute;left:0;right:0;bottom:0;height:calc(1224/768*100cqw);overflow:hidden}
 #plBot{top:calc(-152/768*100cqw)}
 #zFill{position:absolute;left:0;right:0;top:calc(152/768*100cqw);bottom:calc(1224/768*100cqw);background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwAAAAADCAIAAACrn//qAAAF5UlEQVRYCa3B0ZEY15EAwaoenTe6fxlxIf+NwXTpzUBLLCjwCCGY6f/+4/94jIre9z0+gIrXFuDEq5KLw+VogLnYXT5rKifA2N35mxV7AbmVXCrFh1yg9aiA4cJlOlg5tJKHWs1MhVZABai85FGp8Y2v3eVwOdYjFxiuCuUoDuUolVe8XMAGqFSgUu/7Bq7ragXsbuQVU8GqlMprS8U95AKcgNaDr9xqQZ0GUHeXV9xyUTTLfV3XcO0urloBMSpQwXo02xcvjsHdVSu91LorvfjOThwdI2MrpcbDBsjFpeExgJF8ZaMuN0c3HlcFqL1UXiqbugSUj7Zi5LEq65FUuzszsDOzuzyGP6BWgFrxSaWy8VKTSuVVqUClVoA6M734CWrFS63UCqhmpuJHKpXfWx7DY3is2gvwiCP5zWAvNXkNj+X3hsfyPbXipVb8ieGxfDNq3RybmlSAr4pP1Io/oFZ8UCt+bAEbIPl/DY9VgYr/wvBYvhkey68bHgvsl3tmVCBHZe/Kid94VbDVNQPsLocXj+WDXr1mpgKMI1ctq8sBlji61Xi0qwYzUwF6VXRzNBwuH9QOHmrFq101HsLMbAEqUM7M7he14jUz7apbagWogFoBlS9gd0f5TVMxATYcbgWoQIWXurvAzFRjBw2Qy2OA3S8zA8NjeQwfZIH4angsjwFkgXjYAJWafKXurkccycrEf1KBipdx5PIYHquWgFoNVk4PUHupvCp5aQUDzPAoIB7yiEel8lkPFJDH7qqAGlQqUKmVyodKnZldDg0Y7YDK1+6q6wDTVv79H/+sYGYQ6i6PeLkcDa8Kd2ZYKxSQTQ61VQgqX0DchppbDf/T4QIqr0quSq0oIL7ZvswM6xFTsV3Xtdy8KpVXBah8Vmr8mzq6u5Ua7O41A2wBKuAEGOomrwrwBdw0MQosN2DT4ard+KrkiptjsqmA6rqu+76ZDhoVqFRAHrmVyktdqFwFZzgKUHsBW74qQOUlj2pmdhdQKyaOTeVDNXE0F7+3fIjhk3UmXstL3UUtD+Cuy/hexzgNj+WDcSS/QOVV8apUfkKl8qEyvlKZq8ftEUcJm8DqxZ+pfFX8BZZvhj9QqbwqFTCO5DCO5FAroFL5S6k3AROPTU1+YxzJUamVyk9QK7XSDhh+WqXyzfBYwDiSv5a6uyp/YnkMP2IcyZ8yjuST5TF8qHzBVDyWlwrsrsqPLd+Tb1qP5KvqcnaXEdBeHpXKpib/qfJV8Qcqle8ZR1KpfDCOXF67OzNAecBWegGVyi9aHsP3ZIEYHgvYAMlhHMnvGEfyQyvHRKUXYAvkAiuH28y0q8YAsuoWh8vR8DvF4aNSK8AGyAXkEY+V6sJKBdQKUHcXGOWl7i4vFahQoFJ5VepKdSGwu9U1o8bwUoGKbsC//+OfPAYW14AB4uVyNECl4gI2Wyogu6QCNkD8niyQqxebXstdqcDuF7WUC1ApID5xARsgpjLUXF5qxYdKBSq1EtSg8ivoxaGAPOIbJ8A4YnhVKqBWN014QC5gUzEdw8WrosFlAmyAXmrFdMjFS61mpt2KCVArXgsDrBwKVKN8qJwBeqn8psfMAJXKK1ftXkAFKo9NvZHHAnqpdau7q24e/NusTKh186EEZv5WATf3hXxSqTddXDyWD8aR/BqVV8WfqWam4nuVyqZWag5Qt0d81SGwevEjasUfq1R+xfLN8Acqle8ZR3IYR3KoFVCp/NVWjonDOJLfGEdyVGql8nNUoILlMXyiVvys4bGAcSS/oFJ5qRX/teUx/Mhgh3ylVvyIcSSfLI8BKpWXXhX/trzUXnrxWF6VCtSt8qHy4NE6M7vLyAfjSF7LY4BKZVOTz9QKUKub1ImfZDzGik8M9e6Lyid6VbA8hlel8iuWx/A9AzeGxwI2QHIYR/I7xpH8p0pdmaj0UtkbyAUaKzcPqPDi6FbRCldt5RO1XQ7lezZAbjUKxOMm4MJKBSqVVwWM8kkFqLyCSgXUPqgrE2oFyCNG7aVWYzPzL5HGd1sUrkQNAAAAAElFTkSuQmCC) 0 0/100% 100% no-repeat}
+
+/* dolgu: dikis cizgisini kapat, gece gokyuzu */
+#zFill{top:calc(152/768*100cqw - 3px)!important;bottom:calc(1224/768*100cqw - 3px)!important;overflow:hidden}
+#zFill::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(4,6,14,.55),rgba(4,6,14,0) 70%);pointer-events:none}
+.star{position:absolute;width:.7cqw;height:.7cqw;border-radius:50%;background:#e9efff;animation:tw var(--d,3s) ease-in-out var(--w,0s) infinite;opacity:.2;z-index:1}
+@keyframes tw{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:.95;transform:scale(1.2)}}
+.moon{position:absolute;right:14%;top:22%;width:11cqw;height:11cqw;border-radius:50%;background:radial-gradient(circle at 38% 38%,#fffbea,#d9d2b8 70%);box-shadow:0 0 5cqw 2cqw #c9d6ff55;z-index:1;opacity:.92}
+.moon::after{content:"";position:absolute;left:46%;top:-4%;width:100%;height:108%;border-radius:50%;background:#101626;opacity:.0}
 </style>
 </head>
 <body>
@@ -555,6 +563,15 @@ function confirmCode(){const c=($('codeIn').value||'').trim().toUpperCase();
   else toast(c==='FORGE100'?'Kod zaten kullanıldı.':'Geçersiz kod.')}
 /* ---------- Karakter / efektler ---------- */
 function heroTap(){const h=$('hero');h.classList.remove('hop');void h.offsetWidth;h.classList.add('hop');setTimeout(()=>h.classList.remove('hop'),520)}
+
+function initSky(){
+  const f=$('zFill');if(!f)return;
+  for(let i=0;i<34;i++){const e=document.createElement('span');e.className='star';
+    e.style.left=(Math.random()*96+2)+'%';e.style.top=(Math.random()*88+4)+'%';
+    e.style.setProperty('--d',(2+Math.random()*3.5)+'s');e.style.setProperty('--w',(-Math.random()*5)+'s');
+    if(Math.random()<.2){e.style.width=e.style.height='1.1cqw'}f.appendChild(e)}
+  const m=document.createElement('div');m.className='moon';f.appendChild(m);
+}
 function initFx(){
   const m=$('plBot');
   const g=document.createElement('div');g.className='anvilglow';g.style.cssText='left:28%;top:78%;width:46%;height:12%';m.insertBefore(g,$('hammer'));
@@ -566,7 +583,7 @@ function initFx(){
 let AC;function sfx(){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.setValueAtTime(900,AC.currentTime);o.frequency.exponentialRampToValueAtTime(220,AC.currentTime+.12);g.gain.setValueAtTime(.18*S.sound/100,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+.16);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+.17)}catch(e){}}
 
 /* ---------- Baslat ---------- */
-load();initFx();runLoading();
+load();initFx();initSky();runLoading();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 
 </script>
