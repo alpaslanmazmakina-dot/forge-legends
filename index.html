@@ -680,7 +680,7 @@ body{display:flex;align-items:center;justify-content:center;height:100vh;height:
 .mhero{position:absolute;width:21%;transform:translate(-50%,-100%);z-index:3;animation:hbob 2.4s ease-in-out infinite}
 .hpad{position:absolute;width:28%;height:3.2%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,#c9a86a66,#0000 70%);z-index:2}
 @keyframes hbob{50%{transform:translate(-50%,-100.8%)}}
-#mainHero{filter:drop-shadow(0 1.5cqw 1cqw #000a)}#hGear img{position:absolute;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 .4cqw .4cqw #0009)}
+#mainHero{filter:drop-shadow(0 1.5cqw 1cqw #000a)}#hGear img,#bGear img{position:absolute;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 .4cqw .4cqw #0009)}
 </style>
 </head>
 <body>
@@ -809,7 +809,7 @@ body{display:flex;align-items:center;justify-content:center;height:100vh;height:
   <div class="sbar"><button class="sback" onclick="Scr.close('advScr')"><i>◀</i></button></div></div>
 <div class="scr" id="batScr"><img class="bimg" id="bImg" alt="">
   <div class="bhd"><button onclick="batBack()">◀</button><span id="bTt">1-1</span><span id="bRd">Tur 1/20</span><button id="bSp" onclick="batSpeed()">X1</button></div>
-  <div class="bun hero" id="bHero" style="left:30%;top:60%"><div class="bnm" id="bHn"></div><div class="bhp"><i id="bHhp"></i></div><img id="bHi" alt="" style="height:27cqw"></div>
+  <div class="bun hero" id="bHero" style="left:30%;top:60%"><div class="bnm" id="bHn"></div><div class="bhp"><i id="bHhp"></i></div><div id="bHw" style="position:relative;height:27cqw;width:17.4cqw;margin:0 auto"><img id="bHi" alt="" style="height:100%;display:block"><div id="bGear"></div></div></div>
   <div class="bun en" id="bEn" style="left:69%;top:60%"><div class="bnm" id="bEnm"></div><div class="bhp e"><i id="bEhp"></i></div><img id="bEi" alt="" style="height:30cqw"></div>
 </div>
 <div class="modal" id="stgModal" style="z-index:70" onclick="if(event.target===this)Modal.close('stgModal')"><div class="paper"><div class="rtitle" id="stgT">1-1</div><div class="stgbody" id="stgB"></div></div></div>
@@ -1250,7 +1250,7 @@ function advSim(h,e){let hp=h.HP,ep=e.HP,ev=[],cr=(h.CRIT||0)/100;
 const HG={clothing:[50,55,50,1],trousers:[50,76,40,2],boots:[50,91,44,3],pauldron:[27,42,32,4],gloves:[80,63,24,5],necklace:[50,40,22,6],helmet:[50,10,50,7],weapon:[90,60,52,8]};
 let hgKey='';
 function heroGear(){const e=S.eq||{};let k='';const L=[];for(const sl in HG){const it=e[sl];if(!it||it.starter)continue;const v=(TIER[sl]||[])[Math.min(it.rar||0,5)];if(!v)continue;const src=v[(it.vi||0)%v.length];k+=sl+(it.rar||0)+(it.vi||0);const g=HG[sl];L.push('<img src="'+src+'" style="left:'+g[0]+'%;top:'+g[1]+'%;width:'+g[2]+'%;z-index:'+g[3]+(sl==='weapon'?';transform:translate(-50%,-50%) rotate(18deg)':'')+'" alt="">')}
-  if(k!==hgKey){hgKey=k;$('hGear').innerHTML=L.join('')}}
+  if(k!==hgKey){hgKey=k;$('hGear').innerHTML=L.join('');$('bGear').innerHTML=L.join('')}}
 function heroStats(){const t=totals();popup('<div style="text-align:center;font-weight:800;line-height:1.7">❤ '+t.HP+' &nbsp; ⚔ '+t.ATK+' &nbsp; 🛡 '+t.DEF+' &nbsp; ⚡ '+t.SPD+'</div>',S.name)}
 function openAdv(){S.adv=S.adv||0;S.advc=S.advc||{};const m=$('advMap');let h='';
   for(let n=ADVN;n>=1;n--){const st=n<=S.adv?'done':n===S.adv+1?'cur':'lock',b=n%10===0,x=50+Math.sin(n*1.1)*26;
@@ -1272,7 +1272,7 @@ function batStart(n){Modal.close('stgModal');const e=stageEn(n),t=totals(),res=a
   $('bImg').src=ADVIMG.bg;$('bHi').src=ADVIMG.hero;$('bEi').src=ADVIMG[e.img];$('bHn').textContent=S.name;$('bEnm').textContent=e.name;
   $('bTt').textContent='1-'+n;$('bRd').textContent='Tur 1/20';$('bSp').textContent='X'+B.sp;
   $('bHhp').style.width='100%';$('bEhp').style.width='100%';$('bHero').classList.remove('dead');$('bEn').classList.remove('dead');
-  Scr.open('batScr');B.tm=setTimeout(batStep,700)}
+  try{hgKey='';heroGear()}catch(e){}Scr.open('batScr');B.tm=setTimeout(batStep,700)}
 function batSpeed(){B.sp=B.sp===1?2:1;$('bSp').textContent='X'+B.sp}
 function batBack(){if(B){clearTimeout(B.tm);B.done=1}Scr.close('batScr')}
 function batFloat(id,txt,cls){const u=$(id),g=$('batScr'),a=document.createElement('div');a.className='dmg '+(cls||'');a.textContent=txt;
